@@ -1,0 +1,71 @@
+<div class="full-url-container">
+    <div class="url-input-container">
+        <mat-form-field style="width: 100%;">
+            <mat-label>Enter Full Url</mat-label>
+            <input type="url" matInput placeholder="" [(ngModel)]="fullUrl">
+        </mat-form-field>
+    </div>
+    <div class="btn-container">
+        <button mat-raised-button (click)="getShortUrlClick()" *ngIf="!gettingShort">Get Short Url</button>
+        <mat-progress-spinner [mode]="'indeterminate'" diameter="40" *ngIf="gettingShort"></mat-progress-spinner>
+    </div>
+    <div class="error-message-container" *ngIf="shortErrorMessage!=''">{{shortErrorMessage}}</div>
+    <div class="success-message-container" *ngIf="shortSuccessUrl!=''">
+        <a [href]="shortSuccessUrl" target="_blank">{{shortSuccessUrl}}</a>
+        <div class="copy-to-clipboard" (click)="copyToClipboardClick()">
+            <mat-icon aria-hidden="false" aria-label="Copy to clipboard" fontIcon="copy_all"></mat-icon>
+        </div>
+    </div>
+</div>
+
+<div class="short-url-container">
+    <div class="url-input-container">
+        <mat-form-field style="width: 100%;">
+            <mat-label>Enter Short Url</mat-label>
+            <input type="url" matInput placeholder="" [(ngModel)]="shortUrl">
+        </mat-form-field>
+    </div>
+    <div class="btn-container">
+        <button mat-raised-button (click)="redirectClick()" *ngIf="!redirecting">Redirect</button>
+        <mat-progress-spinner [mode]="'indeterminate'" diameter="40" *ngIf="redirecting"></mat-progress-spinner>
+    </div>
+    <div class="error-message-container" *ngIf="redirectErrorMessage!=''">{{redirectErrorMessage}}</div>
+</div>
+
+<div class="mappings-container" *ngIf="canShowTable">
+    <table style="width: 100%;border-width: 0px;border-style: solid;border-color: rgba(0,0,0,0.10);" cellspacing="0" cellpadding="0">
+        <thead>
+            <tr>
+                <th style="width: 50%;">Full Url</th>
+                <th>Short Url</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let mapping of allMappings">
+                <td>
+                    <a [href]="mapping.fullUrl" target="_blank">{{mapping.fullUrl}}</a>
+                </td>
+                <td>
+                    {{mapping.shortUrl}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <div style="text-align: center;">
+            <button *ngIf="pagination.can_previous" (click)="pagePreviousClick()">Previous</button>
+            &nbsp;&nbsp;
+            Page {{pagination.page}} of {{pagination.totalPages}}
+            &nbsp;&nbsp;
+            <button *ngIf="pagination.can_next" (click)="pageNextClick()">Next</button>
+        </div>
+    </div>
+    <!-- <div class="mapping" *ngFor="let mapping of allMappings">
+        <div class="full-url">
+            <a [href]="mapping.fullUrl" target="_blank">{{mapping.fullUrl}}</a>
+        </div>
+        <div class="short-url">
+            {{mapping.shortUrl}}
+        </div>
+    </div> -->
+</div>
